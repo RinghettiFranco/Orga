@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1568226312 source:c:\users\franco\desktop\orga\proyecto-paralelo\main.c
+	<stdio.h>
+	<stdlib.h>
+
