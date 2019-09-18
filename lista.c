@@ -1,11 +1,9 @@
-#include <C:\Users\FRANCO\Desktop\ORGA\Proyecto-Paralelo\lista.h>
+#include <C:\Users\FRANCO\Desktop\ORGA\Orga\lista.h>
 #include <stdlib.h>
 
 typedef struct celda* tLista;
 typedef struct celda* tPosicion;
 typedef void* tElemento;
-
-unsigned int size;
 
 /**
  Inicializa una lista vac�a.
@@ -13,9 +11,9 @@ unsigned int size;
 **/
 void crear_lista(tLista* l){
     *l = (tLista) malloc(sizeof (struct celda));
+    if(*l==NULL)exit(LST_ERROR_MEMORIA);
     (*l)->elemento=NULL;
     (*l)->siguiente=NULL;
-    size=0;
 }
 
 /**
@@ -25,10 +23,10 @@ void crear_lista(tLista* l){
 **/
 void l_insertar(tLista l, tPosicion p, tElemento e){
     tPosicion nw = (tPosicion) malloc(sizeof (struct celda));
+    if(nw==NULL)exit(LST_ERROR_MEMORIA);
     nw->elemento=e;
     nw->siguiente=p->siguiente;
     p->siguiente=nw;
-    size++;
 }
 
 /**
@@ -42,8 +40,8 @@ void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento)){
     tPosicion nSiguiente = (aEliminar->siguiente);
     aEliminar->siguiente=NULL;
     p->siguiente=nSiguiente;
-    free(aEliminar);
-    size--;
+    if(aEliminar!=NULL)free(aEliminar);
+    aEliminar=NULL;
 }
 
 /**
@@ -57,11 +55,14 @@ void l_destruir(tLista * l, void (*fEliminar)(tElemento)){
         tPosicion nSiguiente = (aEliminar->siguiente);
         aEliminar->siguiente=NULL;
         p->siguiente=nSiguiente;
-        free(aEliminar);
+        if(aEliminar!=NULL)free(aEliminar);
+        aEliminar=NULL;
     }
     fEliminar(p->elemento);
-    free(p);
-    free(l);
+    if(p!=NULL)free(p);
+    p=NULL;
+    if(p!=NULL)free(l);
+    *l=NULL;
 }
 
  /**
@@ -81,7 +82,7 @@ tElemento l_recuperar(tLista l, tPosicion p){
  Si L es vac�a, primera(L) = ultima(L) = fin(L).
 **/
 tPosicion l_primera(tLista l){
-    return (l->siguiente);
+    return l;
 }
 
 /**
@@ -90,8 +91,7 @@ tPosicion l_primera(tLista l){
 **/
 tPosicion l_siguiente(tLista l, tPosicion p){
     if((p->siguiente)==NULL)exit(LST_NO_EXISTE_SIGUIENTE); //¿¿¿??? -> Consultar chequeo valido.
-    tPosicion sigF = p->siguiente;
-    return (sigF->siguiente);
+    return (p->siguiente);
 }
 
 /**
@@ -100,6 +100,8 @@ tPosicion l_siguiente(tLista l, tPosicion p){
 **/
 tPosicion l_anterior(tLista l, tPosicion p){
     if(p==l)exit(LST_NO_EXISTE_ANTERIOR);
+    tPosicion pos=l;
+    while((pos->siguiente)!=p)pos=(pos->siguiente);
     return p;
 }
 
@@ -108,7 +110,7 @@ tPosicion l_anterior(tLista l, tPosicion p){
  Si L es vac�a, primera(L) = ultima(L) = fin(L).
 **/
 tPosicion l_ultima(tLista l){
-    tPosicion toRet = NULL;
+    tPosicion toRet = l;
     tPosicion actual = l;
     while((actual->siguiente)!=NULL){
         toRet=actual;
@@ -131,6 +133,9 @@ tPosicion l_fin(tLista l){
  Retorna la longitud actual de la lista.
 **/
 int l_longitud(tLista l){
-    return size;
+    tPosicion aux=l;
+    int i=0;
+    while((aux->siguiente)!=NULL)i++;
+    return i;
 }
 
