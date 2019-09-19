@@ -23,9 +23,12 @@ void crear_lista(tLista* l){
 **/
 void l_insertar(tLista l, tPosicion p, tElemento e){
     tPosicion nw = (tPosicion) malloc(sizeof (struct celda));
+    if(p==NULL)exit(LST_POSICION_INVALIDA);
+    if(l==NULL)exit(LST_POSICION_INVALIDA);
     if(nw==NULL)exit(LST_ERROR_MEMORIA);
+    if(e==NULL)exit(LST_ELEMENTO_NULO);
     nw->elemento=e;
-    nw->siguiente=p->siguiente;
+    (nw->siguiente)=(p->siguiente);
     p->siguiente=nw;
 }
 
@@ -34,6 +37,8 @@ void l_insertar(tLista l, tPosicion p, tElemento e){
  Si P es fin(L), finaliza indicando LST_POSICION_INVALIDA.
 **/
 void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento)){
+    if(p==NULL)exit(LST_POSICION_INVALIDA);
+    if(l==NULL)exit(LST_POSICION_INVALIDA);
     if(p->siguiente == NULL)exit(LST_POSICION_INVALIDA);
     tPosicion aEliminar = (p->siguiente);
     fEliminar(aEliminar->elemento);
@@ -48,6 +53,7 @@ void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento)){
  Destruye la lista L, elimininando cada una de sus celdas. Los elementos almacenados en las celdas son eliminados mediante la funci�n fEliminar parametrizada.
 **/
 void l_destruir(tLista * l, void (*fEliminar)(tElemento)){
+    if(*l==NULL)exit(LST_POSICION_INVALIDA);
     tPosicion p = (tPosicion) l;
     while(p->siguiente!=NULL){
         tPosicion aEliminar = (p->siguiente);
@@ -70,6 +76,8 @@ void l_destruir(tLista * l, void (*fEliminar)(tElemento)){
  Si P es fin(L), finaliza indicando LST_POSICION_INVALIDA.
 **/
 tElemento l_recuperar(tLista l, tPosicion p){
+    if(p==NULL)exit(LST_POSICION_INVALIDA);
+    if(l==NULL)exit(LST_POSICION_INVALIDA);
     if((p->siguiente)==NULL)exit(LST_POSICION_INVALIDA);
     tElemento toRet;
     tPosicion sig = p->siguiente;
@@ -82,6 +90,7 @@ tElemento l_recuperar(tLista l, tPosicion p){
  Si L es vac�a, primera(L) = ultima(L) = fin(L).
 **/
 tPosicion l_primera(tLista l){
+    if(l==NULL)exit(LST_POSICION_INVALIDA);
     return l;
 }
 
@@ -90,7 +99,8 @@ tPosicion l_primera(tLista l){
  Si P es fin(L), finaliza indicando LST_NO_EXISTE_SIGUIENTE.
 **/
 tPosicion l_siguiente(tLista l, tPosicion p){
-    if((p->siguiente)==NULL)exit(LST_NO_EXISTE_SIGUIENTE); //¿¿¿??? -> Consultar chequeo valido.
+    if(l==NULL)exit(LST_POSICION_INVALIDA);
+    if((p->siguiente)==NULL)exit(LST_NO_EXISTE_SIGUIENTE);
     return (p->siguiente);
 }
 
@@ -135,7 +145,10 @@ tPosicion l_fin(tLista l){
 int l_longitud(tLista l){
     tPosicion aux=l;
     int i=0;
-    while((aux->siguiente)!=NULL)i++;
+    while((aux->siguiente)!=NULL){
+        i++;
+        aux=(aux->siguiente);
+    }
     return i;
 }
 
