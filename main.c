@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <C:\Users\fede\Documents\GitHub\Orga\lista.h>
 
 typedef struct celda* tLista;
 typedef struct celda* tPosicion;
@@ -223,4 +222,5 @@ int main(){
     }else{
         if(choice==2)casos_particulares(lista);
     }
+
 }
