@@ -112,7 +112,7 @@ tPosicion l_anterior(tLista l, tPosicion p){
     if(p==l)exit(LST_NO_EXISTE_ANTERIOR);
     tPosicion pos=l;
     while((pos->siguiente)!=p)pos=(pos->siguiente);
-    return p;
+    return pos;
 }
 
  /**

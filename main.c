@@ -10,7 +10,7 @@ void mostrar(tLista l){
 
     if(l==NULL){
         printf("La lista no existe.");
-        exit(1);
+        exit(0);
     }
 
     int cant=l_longitud(l);
@@ -37,7 +37,7 @@ void casos_simples(tLista lista){
     /**Inserto elementos.**/
     printf("PRUEBA INSERCION: \n");
     int value1,value2,value3;
-    tElemento e,e1,e2;
+    tElemento e;
 
     printf("Inserto un 1 en la lista vacia => \n");
     value1=1;e=&value1;
@@ -46,16 +46,16 @@ void casos_simples(tLista lista){
     e=NULL;
 
     printf("Inserto un 3 luego del 1 => \n");
-    value3=3;e1=&value3;
-    l_insertar(lista,l_fin(lista),e1);
+    value3=3;e=&value3;
+    l_insertar(lista,l_fin(lista),e);
     mostrar(lista);
-    e1=NULL;
+    e=NULL;
 
     printf("Inserto un 2 luego del 1 => \n");
-    value2=2;e2=&value2;
-    l_insertar(lista,l_ultima(lista),e2);
+    value2=2;e=&value2;
+    l_insertar(lista,l_ultima(lista),e);
     mostrar(lista);
-    e2=NULL;
+    e=NULL;
     printf("\n");
 
     /**Elimino los elementos.**/
@@ -106,7 +106,7 @@ void casos_simples(tLista lista){
     printf("%i \n",*(int*)l_recuperar(lista,l_anterior(lista,segundo)));
 
     printf("Retorno el anterior al ultimo: ");
-    printf("%i \n",*(int*)l_recuperar(lista,l_ultima(lista)));
+    printf("%i \n",*(int*)l_recuperar(lista,l_anterior(lista,l_ultima(lista))));
     printf("\n");
 
     /**Destruccion de la lista**/
@@ -123,7 +123,7 @@ void casos_particulares(tLista lista){
     printf("Para verificar que la funcion eliminar si recibe fin(L) llega a situacion de LST_POSICION_INVALIDA presione 1. \n");
     printf("Para verificar que la funcion recuperar si recibe fin(L) llega a situacion de LST_POSICION_INVALIDA presione 2. \n");
     printf("Para verificar que al solicitar el siguiente de fin(L) se llega a situacion de LST_NO_EXISTE_SIGUIENTE presione 3. \n");
-    printf("Para verificar que al solicitar el siguiente de fin(L) se llega a situacion de LST_NO_EXISTE_ANTERIOR presione 4. \n");
+    printf("Para verificar que al solicitar el anterior de fin(L) se llega a situacion de LST_NO_EXISTE_ANTERIOR presione 4. \n");
     printf("Para verificar que al tratar de insertar un elemento NULL se llega a situacion de LST_ELEMENTO_NULO presione 5. \n");
     printf("Para verificar que cualquier operacion que reciba una posicion nula llega a una situacion de LST_POSICION_INVALIDA presione 6. \n");
     printf("Para verificar que cualquier operacion que reciba una lista nula llega a una situacion de LST_POSICION_INVALIDA presione 7. \n");
@@ -194,55 +194,7 @@ void casos_particulares(tLista lista){
     }
 
 
-    /**
-    switch(choice){
-        case 'a':
-            printf("Verificar que la funcion eliminar si recibe fin(L) llega a situacion de LST_POSICION_INVALIDA. \n");
-            l_eliminar(lista,l_fin(lista),&eliminarEnteros);
-            break;
-        case 'b':
-            printf("Verificar que la funcion recuperar si recibe fin(L) llega a situacion de LST_POSICION_INVALIDA. \n");
-            l_recuperar(lista,l_fin(lista));
-            break;
-        case 'c':
-            printf("Verificar que al solicitar el siguiente de fin(L) se llega a situacion de LST_NO_EXISTE_SIGUIENTE. \n");
-            l_siguiente(lista,l_fin(lista));
-            break;
-        case 'd':
-            printf("Verificar que al solicitar el anterior de primera se llega a situacion de LST_NO_EXISTE_SIGUIENTE. \n");
-            int value; tElemento e; value=1;e=&value;
-            l_insertar(lista,l_primera(lista),e);
-            l_anterior(lista,l_primera(lista));
-            break;
-        case 'e':
-            printf("Verificar que al tratar de insertar un elemento NULL se llega a situacion de LST_ELEMENTO_NULO. \n");
-            e=NULL;
-            l_insertar(lista,l_primera(lista),e);
-            break;
-        case 'f':
-            printf("Verificar que cualquier operacion que reciba una posicion nula llega a una situacion de LST_POSICION_INVALIDA. \n");
-            value=1;e=&value;
-            tPosicion p=NULL;
-            l_insertar(lista,p,e);
-            break;
-        case 'g':
-            printf("Verificar que cualquier operacion que reciba una lista nula llega a una situacion de LST_POSICION_INVALIDA. \n");
-            value=1;e=&value;
-            tLista ex=NULL;
-            l_insertar(ex,l_primera(lista),e);
-            break;
-        case 'h':
-            printf("Verificar que solicitar el primero de una lista vacia es fin(L)=NULL. \n");
-            mostrar(lista);
-            if(l_primera(lista)==lista)printf("El primero de la lista es FIN(L).");
-            break;
-        case 'i':
-            printf("Verificar que solicitar el ultimo de una lista vacia es fin(L)=NULL. \n");
-            mostrar(lista);
-            if(l_primera(lista)==lista)printf("El ultimo de la lista es FIN(L).");
-            break;
 
-    }*/
 
 }
 
