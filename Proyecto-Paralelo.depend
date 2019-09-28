@@ -3,12 +3,11 @@
 	<stdio.h>
 	<stdlib.h>
 
-1568863340 source:c:\users\franco\desktop\orga\orga\main.c
+1569704017 source:c:\users\franco\desktop\orga\orga\main.c
 	<stdio.h>
 	<stdlib.h>
-	<C:\Users\FRANCO\Desktop\ORGA\Orga\lista.h>
 
-1568861602 source:c:\users\franco\desktop\orga\orga\lista.c
+1569703970 source:c:\users\franco\desktop\orga\orga\lista.c
 	<C:\Users\FRANCO\Desktop\ORGA\Orga\lista.h>
 	<stdlib.h>
 
@@ -20,4 +19,8 @@
 	<stdio.h>
 	<stdlib.h>
 	<C:\Users\fede\Documents\GitHub\Orga\lista.h>
+
+1569708562 source:c:\users\franco\desktop\orga\orga\arbol.c
+	<C:\Users\FRANCO\Desktop\ORGA\Orga\arbol.h>
+	<stdlib.h>
 
