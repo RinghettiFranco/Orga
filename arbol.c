@@ -85,9 +85,30 @@ void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
 
         a->raiz=hijo;
     }else{
-        tNodo padre = (n->padre);
-        tNodo hermanos = (padre->hijos);
+        tNodo papa = (n->padre);
+        tLista hermanos = (papa->hijos);
         tLista hijos = (n->hijos);
+
+        //Busco a n y a su hermano derecho en la lista de hermanos
+        tPosicion pH,pN=l_primera(hermanos);
+        while((l_recuperar(hermanos,pN)!=n) && (pN!=l_fin(hermanos)))pN=l_siguiente(hermanos,pN);
+        pH=(l_ultima(hermanos)==pN)?NULL:l_siguiente(hermanos,pN);
+
+        //Elimino a n de su lista de hermanos e inserto a los hijos
+        l_eliminar(hermanos,pN,fEliminar);
+        tPosicion hijo = l_primera(hijos);
+        while(hijo!=l_fin(hijos)){
+            tNodo nHijo =l_recuperar(hijos,hijo);
+            l_insertar(hermanos,pH,nHijo);
+            nHijo->padre=papa;
+            hijo=l_siguiente(hijos,hijo);
+        }
+
+        //Elimino el nodo
+        fEliminar((n->elemento));
+        l_destruir(&(n->hijos),fEliminar);
+        if(n!=NULL)free(n);
+        n=NULL;
     }
 }
 
