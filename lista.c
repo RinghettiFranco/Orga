@@ -1,4 +1,4 @@
-#include <C:\Users\FRANCO\Desktop\ORGA\Orga\lista.h>
+#include <C:\Users\fede\Documents\GitHub\Orga\lista.h>
 #include <stdlib.h>
 
 typedef struct celda* tLista;
@@ -135,7 +135,8 @@ tPosicion l_ultima(tLista l){
 **/
 tPosicion l_fin(tLista l){
     tPosicion toRet = l;
-    while((toRet->siguiente)!=NULL)toRet=(toRet->siguiente);
+    while((toRet->siguiente)!=NULL)
+        toRet=(toRet->siguiente);
     return toRet;
 }
 
