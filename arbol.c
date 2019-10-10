@@ -1,20 +1,24 @@
-#include <C:\Users\fede\Documents\GitHub\Orga\arbol.h>
 #include <C:\Users\fede\Documents\GitHub\Orga\lista.h>
-
-
+#include <C:\Users\fede\Documents\GitHub\Orga\arbol.h>
 #include <stdlib.h>
+#include<stdio.h>
+
 
 typedef struct nodo * tNodo;
 typedef struct arbol * tArbol;
 
+void fNoEliminar(){}
 void (*fElim)(tElemento) = NULL;
 
-void fNoEliminar(){}
+
 
 void fSiEliminar(tElemento n){
     fElim(((tNodo) n)->elemento);
     ((tNodo)n)->padre=NULL;
-    l_destruir(&(((tNodo)n)->hijos),fElim);
+    tNodo nodo= (tNodo)n;
+    tLista lista=nodo->hijos;
+    l_destruir(&lista,fElim);
+    //l_destruir(&(((tNodo)n)->hijos),fElim);
     free(n);
     n=NULL;
 }
@@ -91,17 +95,17 @@ void crear_raiz(tArbol a, tElemento e){
 tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){
     if(a==NULL)exit(ARB_OPERACION_INVALIDA);
     if(np==NULL)exit(ARB_OPERACION_INVALIDA);
-    if(nh==NULL)exit(ARB_OPERACION_INVALIDA);
-    tNodo nuevo = (tNodo) malloc(sizeof (struct nodo));
-    if(nuevo==NULL)exit(ARB_ERROR_MEMORIA);
-    tLista children = (tLista) malloc(sizeof (struct celda));
-    if(children==NULL)exit(ARB_ERROR_MEMORIA);//LST o ARB preguntar
-    nuevo->elemento=e;
-    nuevo->padre=np;
+   tNodo nuevo =(tNodo) malloc(sizeof (struct nodo));
+   if(nuevo==NULL)exit(ARB_ERROR_MEMORIA);
+    tLista children;
+   if(children==NULL)exit(ARB_ERROR_MEMORIA);//LST o ARB preguntar
+    (nuevo->elemento)=e;
+    (nuevo->padre)=np;
     crear_lista(&children);
-    nuevo->hijos=children;
+    (nuevo->hijos)=children;
 
-    //Insercion en el arbol
+
+    //Insercion en la lista de hijos
     tLista hermanos = (np->hijos);
     tPosicion hermano = l_primera(hermanos);
     if(nh==NULL){
@@ -111,6 +115,7 @@ tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){
             hermano=l_siguiente(hermanos,hermano);
         if(hermano==l_fin(hermanos))exit(ARB_POSICION_INVALIDA);
         l_insertar(hermanos,hermano,nuevo);
+
     }
 
     return nuevo;
@@ -129,7 +134,6 @@ void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
     if(n==NULL)exit(ARB_OPERACION_INVALIDA);
     if(n==(a->raiz)){
         if(l_longitud((n->hijos))>1)exit(ARB_OPERACION_INVALIDA);//Si no tiene hijos que hacer
-
         if(l_longitud((n->hijos))==1){
             tNodo hijo = l_recuperar((n->hijos),l_primera((n->hijos)));
             fEliminar((n->elemento));
@@ -144,21 +148,22 @@ void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
             n=NULL;
         }
     }else{
-        tNodo father = (n->padre);
+
+        tNodo father= (n->padre);
         tLista brothers = (father->hijos);
         tLista sons = (n->hijos);
-
         tPosicion posN = l_primera(brothers);
-        while(posN!=l_fin(brothers) && n!=l_recuperar(brothers,posN))posN=l_siguiente(brothers,posN);
+        while(posN!=l_fin(brothers) && n!=l_recuperar(brothers,posN)){posN=l_siguiente(brothers,posN);}
         tPosicion rBro = l_siguiente(brothers,posN);
-
         tPosicion actual = l_primera(sons);
-        while(actual!=l_fin(brothers)){
-            tNodo n = l_recuperar(sons,actual);
-            l_insertar(brothers,rBro,n);
-            (n->padre)=father;
-        }
+        while(actual!=l_fin(sons)){//EL ERROR ERA ACA!!!!
+            tNodo nue = l_recuperar(sons,actual);
+            l_insertar(brothers,rBro,nue);
+            (nue->padre)=father;
+            actual=l_siguiente(sons,actual);
 
+
+        }
         l_eliminar(brothers,posN,&fNoEliminar);
 
         fEliminar((n->elemento));
@@ -176,6 +181,9 @@ void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
 void a_destruir(tArbol * a, void (*fEliminar)(tElemento)){
     fElim = fEliminar;
     vaciar(((*a)->raiz),fSiEliminar);
+    if(*a!=NULL) *a=NULL;
+    free(a);
+
 }
 
 

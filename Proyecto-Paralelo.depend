@@ -11,21 +11,23 @@
 	<C:\Users\FRANCO\Desktop\ORGA\Orga\lista.h>
 	<stdlib.h>
 
-1570484365 source:c:\users\fede\documents\github\orga\lista.c
+1570681147 source:c:\users\fede\documents\github\orga\lista.c
 	<C:\Users\fede\Documents\GitHub\Orga\lista.h>
 	<stdlib.h>
 
-1569724609 source:c:\users\fede\documents\github\orga\main.c
-	<C:\Users\fede\Documents\GitHub\Orga\lista.h>
+1570693436 source:c:\users\fede\documents\github\orga\main.c
 	<stdio.h>
 	<stdlib.h>
+	<C:\Users\fede\Documents\GitHub\Orga\lista.h>
+	<C:\Users\fede\Documents\GitHub\Orga\arbol.h>
 
 1569708562 source:c:\users\franco\desktop\orga\orga\arbol.c
 	<C:\Users\FRANCO\Desktop\ORGA\Orga\arbol.h>
 	<stdlib.h>
 
-1570645145 source:c:\users\fede\documents\github\orga\arbol.c
-	<C:\Users\fede\Documents\GitHub\Orga\arbol.h>
+1570690230 source:c:\users\fede\documents\github\orga\arbol.c
 	<C:\Users\fede\Documents\GitHub\Orga\lista.h>
+	<C:\Users\fede\Documents\GitHub\Orga\arbol.h>
 	<stdlib.h>
+	<stdio.h>
 
