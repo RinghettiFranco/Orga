@@ -221,32 +221,25 @@ void a_sub_arbol(tArbol a, tNodo n, tArbol * sa){
 **/
 
 void clonar(tNodo clon,tNodo original){
-    printf("4");
     tLista oHijos = (original->hijos);
     tLista cHijos = (clon->hijos);
     tPosicion actual = l_primera(oHijos);
     tPosicion corte = l_fin(oHijos);
 
-    printf("5");
     while(actual!=corte){
         tNodo cNuevo = (tNodo) malloc(sizeof(struct nodo));
         if(cNuevo==NULL)exit(ARB_ERROR_MEMORIA);
         crear_lista(&(cNuevo->hijos));
-        printf("6");
 
         tNodo nActual = l_recuperar(oHijos,actual);
         if(l_longitud((nActual->hijos))>0)clonar(cNuevo,nActual);
-        printf("7");
 
         (cNuevo->elemento)=(nActual->elemento);
         (cNuevo->padre)=clon;
-        printf("8");
 
         l_insertar(cHijos,l_fin(cHijos),cNuevo);
-        printf("9");
 
         actual = l_siguiente(oHijos,actual);
-        printf("10");
     }
 }
 
@@ -259,14 +252,10 @@ void a_sub_arbol(tArbol a, tNodo n, tArbol * sa){
     if(a==NULL)exit(ARB_POSICION_INVALIDA);
     if(n==NULL)exit(ARB_POSICION_INVALIDA);
 
-    printf("1");
     *sa = (tArbol) malloc(sizeof(struct nodo));
-    printf("1a");
     if((*sa)==NULL)exit(ARB_ERROR_MEMORIA);
-    printf("1b");
     (*sa)->raiz=NULL;
 
-    printf("2");
     tNodo saRoot = (tNodo) malloc(sizeof(struct nodo));
     if(saRoot==NULL)exit(ARB_ERROR_MEMORIA);
     (saRoot->elemento)=(n->elemento);
@@ -274,7 +263,6 @@ void a_sub_arbol(tArbol a, tNodo n, tArbol * sa){
     crear_lista(&(saRoot->hijos));
     ((*sa)->raiz)=saRoot;
 
-    printf("3");
     clonar(((*sa)->raiz),n);
 }
 

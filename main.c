@@ -149,15 +149,15 @@ mostrarhijos(arbol,hijos15,n15);
 printf("----------------------------- \n Se hace el testeo del subArbol, donde la raiz del arbol nuevo\n ");
 printf("sera la que contiene al elemento 13 \n\n\n");
 printf("Probando el arbol nuevo \n");
-tArbol * nuevoArbol;
-a_sub_arbol(arbol,nuevoprim,nuevoArbol);
+tArbol nuevoArbol;
+a_sub_arbol(arbol,nuevoprim,&nuevoArbol);
 
 printf("Recuperamos el elemento contenido en la raiz: \n");
-tNodo nuevoRaiz=a_raiz(*nuevoArbol);
+tNodo nuevoRaiz=a_raiz(nuevoArbol);
 
 printf("El elemento contenido es el [%i] \n\n", *(int*)nuevoRaiz->elemento);
 
-tLista listaNuevo=a_hijos(*nuevoArbol,nuevoRaiz);
+tLista listaNuevo=a_hijos(nuevoArbol,nuevoRaiz);
 mostrarhijos(nuevoArbol,listaNuevo,nuevoRaiz);
 
 tPosicion primeroNuevo = l_primera(listaNuevo);
