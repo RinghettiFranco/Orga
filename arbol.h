@@ -1,6 +1,6 @@
 #ifndef ARBOL_H_INCLUDED
 #define ARBOL_H_INCLUDED
-#include <C:\Users\fede\Documents\GitHub\Orga\lista.h>
+#include <C:\Users\FRANCO\Desktop\ORGA\Orga\lista.h>
 
 #define ARB_OPERACION_INVALIDA      10
 #define ARB_POSICION_INVALIDA       11

@@ -1,5 +1,5 @@
-#include <C:\Users\fede\Documents\GitHub\Orga\lista.h>
-#include <C:\Users\fede\Documents\GitHub\Orga\arbol.h>
+#include <C:\Users\FRANCO\Desktop\ORGA\Orga\lista.h>
+#include <C:\Users\FRANCO\Desktop\ORGA\Orga\arbol.h>
 #include <stdlib.h>
 #include<stdio.h>
 
@@ -7,50 +7,24 @@
 typedef struct nodo * tNodo;
 typedef struct arbol * tArbol;
 
-void fNoEliminar(){}
+void fNoEliminar(tElemento e){}
 void (*fElim)(tElemento) = NULL;
 
 
-
-void fSiEliminar(tElemento n){
-    fElim(((tNodo) n)->elemento);
-    ((tNodo)n)->padre=NULL;
-    tNodo nodo= (tNodo)n;
-    tLista lista=nodo->hijos;
-    l_destruir(&lista,fElim);
-    //l_destruir(&(((tNodo)n)->hijos),fElim);
-    free(n);
-    n=NULL;
-}
-int nietos(tLista l){
-    int i=0;
-    tPosicion actual = l_primera(l);
-    tNodo n = NULL;
-    tLista h = NULL;
-    while(actual!=l_fin(l) && i==0){
-        n = l_recuperar(l,actual);
-        h = (n->hijos);
-        i+=l_longitud(h);
-        actual = l_siguiente(l,actual);
-    }
-    return i;
-}
-
-
-void vaciar(tNodo n,void (*fEliminar)(tElemento)){
+/**
+ Metodo auxiliar, destruye un subarbol
+**/
+void vaciar(tNodo n){
     tLista sons = (n->hijos);
-    if(nietos(sons)>0){
-        tPosicion actual = l_primera(sons);
-        while(actual!=l_fin(sons)){
-            vaciar(l_recuperar(sons,actual),fEliminar);
+    tPosicion actual = l_primera(sons);
+    tPosicion corte = l_fin(sons);
+    while(actual!=corte){
+            tNodo nActual = l_recuperar(sons,actual);
+            if(l_longitud((nActual->hijos))>0)vaciar(nActual);
+            fElim((n->elemento));
+            l_destruir(&(nActual->hijos),&fNoEliminar);
             actual = l_siguiente(sons,actual);
-        }
     }
-    l_destruir(&(n->hijos),fEliminar);
-    (n->padre)=NULL;
-    fElim((n->elemento));
-    free(n);
-    n=NULL;
 }
 
 
@@ -60,7 +34,7 @@ Una referencia al �rbol creado es referenciado en *A.
 **/
 
  void crear_arbol(tArbol * a){
-    *a=(tArbol) malloc(sizeof(struct arbol));
+    *a=(tArbol) malloc(sizeof(struct nodo));
     if((*a)==NULL) exit (ARB_ERROR_MEMORIA);
     (*a)->raiz=NULL;
 }
@@ -74,17 +48,15 @@ void crear_raiz(tArbol a, tElemento e){
     if((a->raiz)!=NULL)exit(ARB_OPERACION_INVALIDA);
     tNodo root = (tNodo) malloc(sizeof (struct nodo));
     if(root==NULL)exit(ARB_ERROR_MEMORIA);
-    tLista children = (tLista) malloc(sizeof (struct celda));
-    if(children==NULL)exit(ARB_ERROR_MEMORIA);//LST o ARB preguntar
 
     root->elemento=e;
     root->padre=NULL;
 
-    crear_lista(&children);
-    root->hijos=children;
+    crear_lista(&(root->hijos));
 
     a->raiz=root;
 }
+
 /**
  Inserta y retorna un nuevo nodo en A.
  El nuevo nodo se agrega en A como hijo de NP, hermano izquierdo de NH, y cuyo r�tulo es E.
@@ -95,10 +67,19 @@ void crear_raiz(tArbol a, tElemento e){
 tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){
     if(a==NULL)exit(ARB_OPERACION_INVALIDA);
     if(np==NULL)exit(ARB_OPERACION_INVALIDA);
-   tNodo nuevo =(tNodo) malloc(sizeof (struct nodo));
-   if(nuevo==NULL)exit(ARB_ERROR_MEMORIA);
+    tNodo nuevo =(tNodo) malloc(sizeof (struct nodo));
+    if(nuevo==NULL)exit(ARB_ERROR_MEMORIA);
+
     tLista children;
-   if(children==NULL)exit(ARB_ERROR_MEMORIA);//LST o ARB preguntar
+    tLista hermanos = (np->hijos);
+    tPosicion hermano = l_primera(hermanos);
+
+    if(nh!=NULL){
+        while((hermano!=l_fin(hermanos)) && (l_recuperar(hermanos,hermano)!=nh))
+            hermano=l_siguiente(hermanos,hermano);
+        if(hermano==l_fin(hermanos))exit(ARB_POSICION_INVALIDA);
+    }
+
     (nuevo->elemento)=e;
     (nuevo->padre)=np;
     crear_lista(&children);
@@ -106,16 +87,11 @@ tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e){
 
 
     //Insercion en la lista de hijos
-    tLista hermanos = (np->hijos);
-    tPosicion hermano = l_primera(hermanos);
+
     if(nh==NULL){
         l_insertar(hermanos,l_fin(hermanos),nuevo);
     }else{
-        while((l_recuperar(hermanos,hermano)!=nh) && (hermano!=l_fin(hermanos)))
-            hermano=l_siguiente(hermanos,hermano);
-        if(hermano==l_fin(hermanos))exit(ARB_POSICION_INVALIDA);
         l_insertar(hermanos,hermano,nuevo);
-
     }
 
     return nuevo;
@@ -148,7 +124,6 @@ void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
             n=NULL;
         }
     }else{
-
         tNodo father= (n->padre);
         tLista brothers = (father->hijos);
         tLista sons = (n->hijos);
@@ -161,8 +136,7 @@ void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
             l_insertar(brothers,rBro,nue);
             (nue->padre)=father;
             actual=l_siguiente(sons,actual);
-
-
+            rBro=l_siguiente(brothers,rBro);
         }
         l_eliminar(brothers,posN,&fNoEliminar);
 
@@ -180,10 +154,9 @@ void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
 **/
 void a_destruir(tArbol * a, void (*fEliminar)(tElemento)){
     fElim = fEliminar;
-    vaciar(((*a)->raiz),fSiEliminar);
-    if(*a!=NULL) *a=NULL;
-    free(a);
-
+    vaciar(((*a)->raiz));
+    free(*a);
+    *a=NULL;
 }
 
 
@@ -191,41 +164,91 @@ void a_destruir(tArbol * a, void (*fEliminar)(tElemento)){
 /**
 Recupera y retorna el elemento del nodo N.
 */
- tElemento a_recuperar(tArbol a, tNodo n){
-if(a==NULL) exit(ARB_ERROR_MEMORIA);
-
-return n->elemento;
+tElemento a_recuperar(tArbol a, tNodo n){
+    if(a==NULL) exit(ARB_ERROR_MEMORIA);
+    return n->elemento;
 }
 
 /**
 Recupera y retorna el nodo correspondiente a la ra�z de A.
 **/
- tNodo a_raiz(tArbol a){
- if(a==NULL) exit(ARB_ERROR_MEMORIA);
- return (a->raiz);
- }
+tNodo a_raiz(tArbol a){
+    if(a==NULL) exit(ARB_ERROR_MEMORIA);
+    return (a->raiz);
+}
 
 /**
  Obtiene y retorna una lista con los nodos hijos de N en A.
 **/
- tLista a_hijos(tArbol a, tNodo n)
- {if(a==NULL) exit(ARB_ERROR_MEMORIA);
-  if(n==NULL) exit(ARB_ERROR_MEMORIA);
-  return (n->hijos);
- }
-
- void llenar (tArbol sa,tNodo nuevo, tNodo viejo){
-tLista hijosviejo=viejo->hijos;
-tPosicion actual=l_primera(hijosviejo);
-while(actual!= l_fin(hijosviejo))
-    {tNodo hv=l_recuperar(hijosviejo,actual);
-     a_insertar(sa,nuevo,l_recuperar(nuevo->hijos,l_fin(nuevo->hijos)),hv->elemento);
-     tNodo hijoNuevo=l_recuperar(nuevo->hijos,l_ultima(nuevo->hijos));
-     llenar(sa,hijoNuevo,hv);
-    }
-
+tLista a_hijos(tArbol a, tNodo n){
+    if(a==NULL) exit(ARB_ERROR_MEMORIA);
+    if(n==NULL) exit(ARB_ERROR_MEMORIA);
+    return (n->hijos);
 }
 
+/**
+ Metodo auxiliar, colna un sub-arbol.
+**/
+/**
+ void llenar (tArbol sa,tNodo nuevo, tNodo viejo){
+    tLista hijosviejo=(viejo->hijos);
+    tPosicion actual=l_primera(hijosviejo);
+    while(actual!= l_fin(hijosviejo)){
+        tNodo hv=l_recuperar(hijosviejo,actual);
+        a_insertar(sa,nuevo,NULL,(hv->elemento));
+        tNodo hijoNuevo = l_recuperar(nuevo->hijos,l_ultima(nuevo->hijos));
+        llenar(sa,hijoNuevo,hv);
+        actual = l_siguiente(hijosviejo,actual);
+    }
+}
+**/
+/**
+ Inicializa un nuevo �rbol en *SA.
+ El nuevo �rbol en *SA se compone de los nodos del sub�rbol de A a partir de N.
+ El subarbol de A a partir de N debe ser eliminado de A.
+**/
+
+/**
+void a_sub_arbol(tArbol a, tNodo n, tArbol * sa){
+    *sa=(tArbol) malloc(sizeof(struct nodo));
+    if((*sa)==NULL)exit(ARB_ERROR_MEMORIA);
+    (*sa)->raiz=NULL;
+    crear_raiz(*sa,n->elemento);
+    tNodo rNueva= a_raiz(*sa);
+    llenar(*sa,rNueva,n);
+    vaciar(n);
+}
+**/
+
+void clonar(tNodo clon,tNodo original){
+    printf("4");
+    tLista oHijos = (original->hijos);
+    tLista cHijos = (clon->hijos);
+    tPosicion actual = l_primera(oHijos);
+    tPosicion corte = l_fin(oHijos);
+
+    printf("5");
+    while(actual!=corte){
+        tNodo cNuevo = (tNodo) malloc(sizeof(struct nodo));
+        if(cNuevo==NULL)exit(ARB_ERROR_MEMORIA);
+        crear_lista(&(cNuevo->hijos));
+        printf("6");
+
+        tNodo nActual = l_recuperar(oHijos,actual);
+        if(l_longitud((nActual->hijos))>0)clonar(cNuevo,nActual);
+        printf("7");
+
+        (cNuevo->elemento)=(nActual->elemento);
+        (cNuevo->padre)=clon;
+        printf("8");
+
+        l_insertar(cHijos,l_fin(cHijos),cNuevo);
+        printf("9");
+
+        actual = l_siguiente(oHijos,actual);
+        printf("10");
+    }
+}
 
 /**
  Inicializa un nuevo �rbol en *SA.
@@ -233,11 +256,26 @@ while(actual!= l_fin(hijosviejo))
  El subarbol de A a partir de N debe ser eliminado de A.
 **/
 void a_sub_arbol(tArbol a, tNodo n, tArbol * sa){
-crear_arbol(sa);
-crear_raiz(*sa,n->elemento);
-tNodo rNueva= a_raiz(*sa);
-llenar(*sa,n,rNueva);
-vaciar(n,fSiEliminar);
+    if(a==NULL)exit(ARB_POSICION_INVALIDA);
+    if(n==NULL)exit(ARB_POSICION_INVALIDA);
+
+    printf("1");
+    *sa = (tArbol) malloc(sizeof(struct nodo));
+    printf("1a");
+    if((*sa)==NULL)exit(ARB_ERROR_MEMORIA);
+    printf("1b");
+    (*sa)->raiz=NULL;
+
+    printf("2");
+    tNodo saRoot = (tNodo) malloc(sizeof(struct nodo));
+    if(saRoot==NULL)exit(ARB_ERROR_MEMORIA);
+    (saRoot->elemento)=(n->elemento);
+    (saRoot->padre)=NULL;
+    crear_lista(&(saRoot->hijos));
+    ((*sa)->raiz)=saRoot;
+
+    printf("3");
+    clonar(((*sa)->raiz),n);
 }
 
 

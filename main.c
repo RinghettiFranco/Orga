@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <C:\Users\fede\Documents\GitHub\Orga\lista.h>
-#include <C:\Users\fede\Documents\GitHub\Orga\arbol.h>
+#include <C:\Users\FRANCO\Desktop\ORGA\Orga\lista.h>
+#include <C:\Users\FRANCO\Desktop\ORGA\Orga\arbol.h>
 
 typedef struct celda* tLista;
 typedef struct celda* tPosicion;
@@ -150,21 +150,30 @@ printf("----------------------------- \n Se hace el testeo del subArbol, donde l
 printf("sera la que contiene al elemento 13 \n\n\n");
 printf("Probando el arbol nuevo \n");
 tArbol * nuevoArbol;
-a_sub_arbol(arbol,nuevoprim,&nuevoArbol);
+a_sub_arbol(arbol,nuevoprim,nuevoArbol);
 
 printf("Recuperamos el elemento contenido en la raiz: \n");
-tNodo nuevoRaiz=a_raiz(nuevoArbol);
+tNodo nuevoRaiz=a_raiz(*nuevoArbol);
 
 printf("El elemento contenido es el [%i] \n\n", *(int*)nuevoRaiz->elemento);
 
-tLista listaNuevo=a_hijos(nuevoArbol,nuevoRaiz);
+tLista listaNuevo=a_hijos(*nuevoArbol,nuevoRaiz);
 mostrarhijos(nuevoArbol,listaNuevo,nuevoRaiz);
 
+tPosicion primeroNuevo = l_primera(listaNuevo);
+tNodo primero = l_recuperar(listaNuevo,primeroNuevo);
+tLista hijosNuevo = a_hijos(nuevoArbol,primero);
+mostrarhijos(nuevoArbol,hijosNuevo,primero);
 
+/**
+printf("Tratamos de crear una nueva raiz en el subarbol, deberia tirar error 10.");
+crear_raiz(nuevoArbol,i17);
+**/
 
-
-
-
+/**
+printf("Tratamos de eliminar la raiz con mas de un hijo, deberia tirar error 10.");
+a_eliminar(nuevoArbol,a_raiz(nuevoArbol),&eliminarEnteros);
+**/
 return 0;
 }
 
