@@ -35,3 +35,19 @@
 	<stdlib.h>
 	<stdio.h>
 
+1571149312 source:c:\users\fede.000\documents\github\orga\arbol.c
+	<C:\Users\fede.000\Documents\GitHub\Orga\lista.h>
+	<C:\Users\fede.000\Documents\GitHub\Orga\arbol.h>
+	<stdlib.h>
+	<stdio.h>
+
+1571069488 source:c:\users\fede.000\documents\github\orga\lista.c
+	<C:\Users\fede.000\Documents\GitHub\Orga\lista.h>
+	<stdlib.h>
+
+1571069723 source:c:\users\fede.000\documents\github\orga\main.c
+	<stdio.h>
+	<stdlib.h>
+	<C:\Users\fede.000\Documents\GitHub\Orga\lista.h>
+	<C:\Users\fede.000\Documents\GitHub\Orga\arbol.h>
+

@@ -1,5 +1,5 @@
-#include <C:\Users\FRANCO\Desktop\ORGA\Orga\lista.h>
-#include <C:\Users\FRANCO\Desktop\ORGA\Orga\arbol.h>
+#include <C:\Users\fede.000\Documents\GitHub\Orga\lista.h>
+#include <C:\Users\fede.000\Documents\GitHub\Orga\arbol.h>
 #include <stdlib.h>
 #include<stdio.h>
 
@@ -7,8 +7,9 @@
 typedef struct nodo * tNodo;
 typedef struct arbol * tArbol;
 
-void fNoEliminar(tElemento e){}
 void (*fElim)(tElemento) = NULL;
+void fNoEliminar(tElemento e){}
+
 
 
 /**
@@ -23,8 +24,11 @@ void vaciar(tNodo n){
             if(l_longitud((nActual->hijos))>0)vaciar(nActual);
             fElim((n->elemento));
             l_destruir(&(nActual->hijos),&fNoEliminar);
+            (nActual->padre)=NULL;
             actual = l_siguiente(sons,actual);
+
     }
+
 }
 
 
@@ -140,6 +144,7 @@ void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento)){
         }
         l_eliminar(brothers,posN,&fNoEliminar);
 
+
         fEliminar((n->elemento));
         l_destruir(&(n->hijos),&fNoEliminar);
         (n->padre)=NULL;
@@ -186,39 +191,6 @@ tLista a_hijos(tArbol a, tNodo n){
     return (n->hijos);
 }
 
-/**
- Metodo auxiliar, colna un sub-arbol.
-**/
-/**
- void llenar (tArbol sa,tNodo nuevo, tNodo viejo){
-    tLista hijosviejo=(viejo->hijos);
-    tPosicion actual=l_primera(hijosviejo);
-    while(actual!= l_fin(hijosviejo)){
-        tNodo hv=l_recuperar(hijosviejo,actual);
-        a_insertar(sa,nuevo,NULL,(hv->elemento));
-        tNodo hijoNuevo = l_recuperar(nuevo->hijos,l_ultima(nuevo->hijos));
-        llenar(sa,hijoNuevo,hv);
-        actual = l_siguiente(hijosviejo,actual);
-    }
-}
-**/
-/**
- Inicializa un nuevo �rbol en *SA.
- El nuevo �rbol en *SA se compone de los nodos del sub�rbol de A a partir de N.
- El subarbol de A a partir de N debe ser eliminado de A.
-**/
-
-/**
-void a_sub_arbol(tArbol a, tNodo n, tArbol * sa){
-    *sa=(tArbol) malloc(sizeof(struct nodo));
-    if((*sa)==NULL)exit(ARB_ERROR_MEMORIA);
-    (*sa)->raiz=NULL;
-    crear_raiz(*sa,n->elemento);
-    tNodo rNueva= a_raiz(*sa);
-    llenar(*sa,rNueva,n);
-    vaciar(n);
-}
-**/
 
 void clonar(tNodo clon,tNodo original){
     tLista oHijos = (original->hijos);
@@ -264,6 +236,12 @@ void a_sub_arbol(tArbol a, tNodo n, tArbol * sa){
     ((*sa)->raiz)=saRoot;
 
     clonar(((*sa)->raiz),n);
+    vaciar(n);
+
+    tNodo father= (n->padre)
+    tLista fHijos= (father->hijos);
+
+
 }
 
 

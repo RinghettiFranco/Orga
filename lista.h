@@ -32,9 +32,10 @@ extern void l_insertar(tLista l, tPosicion p, tElemento e);
 /**
  Elimina la celda P de L. El elemento almacenado en la posici�n P es eliminado mediante la funci�n fEliminar parametrizada.
  Si P es fin(L), finaliza indicando LST_POSICION_INVALIDA.
+ **/
 extern void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento));
 
-**/
+
 /**
  Destruye la lista L, elimininando cada una de sus celdas. Los elementos almacenados en las celdas son eliminados mediante la funci�n fEliminar parametrizada.
 **/

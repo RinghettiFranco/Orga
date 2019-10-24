@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <C:\Users\FRANCO\Desktop\ORGA\Orga\lista.h>
-#include <C:\Users\FRANCO\Desktop\ORGA\Orga\arbol.h>
+#include <C:\Users\fede.000\Documents\GitHub\Orga\lista.h>
+#include <C:\Users\fede.000\Documents\GitHub\Orga\arbol.h>
 
 typedef struct celda* tLista;
 typedef struct celda* tPosicion;
@@ -164,6 +164,11 @@ tPosicion primeroNuevo = l_primera(listaNuevo);
 tNodo primero = l_recuperar(listaNuevo,primeroNuevo);
 tLista hijosNuevo = a_hijos(nuevoArbol,primero);
 mostrarhijos(nuevoArbol,hijosNuevo,primero);
+
+
+mostrarhijos(arbol,a_hijos(arbol,a_raiz(arbol)),a_raiz(arbol));
+
+
 
 /**
 printf("Tratamos de crear una nueva raiz en el subarbol, deberia tirar error 10.");
